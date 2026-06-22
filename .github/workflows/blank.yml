@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nayan Cart</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, sans-serif;
+}
+
+body{
+  background:#fff;
+}
+
+header{
+  background:#ff3f6c;
+  color:white;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:28px;
+  font-weight:bold;
+}
+
+.cart-btn{
+  background:white;
+  color:#ff3f6c;
+  border:none;
+  padding:10px 15px;
+  border-radius:20px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.banner{
+  text-align:center;
+  padding:20px;
+  background:#fff0f5;
+}
+
+.banner h1{
+  color:#ff3f6c;
+  font-size:32px;
+}
+
+.banner p{
+  color:#555;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:20px;
+  padding:20px;
+}
+
+.card{
+  background:white;
+  border-radius:15px;
+  box-shadow:0 0 10px #ddd;
+  overflow:hidden;
+}
+
+.card img{
+  width:100%;
+  height:250px;
+  object-fit:cover;
+}
+
+.info{
+  padding:15px;
+}
+
+.info h3{
+  margin-bottom:10px;
+}
+
+.info p{
+  color:#666;
+  font-size:14px;
+}
+
+.price{
+  color:#ff3f6c;
+  font-size:20px;
+  font-weight:bold;
+  margin:10px 0;
+}
+
+button{
+  background:#ff3f6c;
+  color:white;
+  border:none;
+  padding:10px 15px;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+.cart-box{
+  display:none;
+  position:fixed;
+  top:0;
+  right:0;
+  width:320px;
+  height:100%;
+  background:white;
+  box-shadow:-5px 0 10px #ccc;
+  padding:20px;
+  overflow:auto;
+}
+
+.close{
+  float:right;
+  background:red;
+}
+
+footer{
+  text-align:center;
+  padding:20px;
+  color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">Nayan Cart</div>
+<button class="cart-btn" onclick="openCart()">
+🛒 Cart (<span id="count">0</span>)
+</button>
+</header>
+
+<section class="banner">
+<h1>Welcome to Nayan Cart</h1>
+<p>Fashion & Premium Products at Best Price</p>
+</section>
+
+<div class="products">
+
+<div class="card">
+<img src="https://i.ibb.co/q36f8qpV/IMG-20260622-083010.jpg">
+<div class="info">
+<h3>Zebronics Headphone</h3>
+<p>Comfortable headphone and premium brand.</p>
+<div class="price">₹499</div>
+<button onclick="addCart('Zebronics Headphone',499)">
+Add To Cart
+</button>
+</div>
+</div>
+
+<div class="card">
+<img src="https://i.ibb.co/dw1sJ64N/IMG-20260622-083051.jpg">
+<div class="info">
+<h3>The Man Perfume</h3>
+<p>Very impressive personal perfume.</p>
+<div class="price">₹299</div>
+<button onclick="addCart('The Man Perfume',299)">
+Add To Cart
+</button>
+</div>
+</div>
+
+</div>
+
+<div class="cart-box" id="cart">
+<h2>Your Cart</h2>
+<button class="close" onclick="closeCart()">X</button>
+
+<div id="items"></div>
+
+<h3>Total: ₹<span id="total">0</span></h3>
+
+<button onclick="orderWhatsApp()">
+Order on WhatsApp
+</button>
+</div>
+
+<footer>
+© 2026 Nayan Cart
+</footer>
+<script>
+
+let cart = [];
+
+function addCart(name, price){
+  cart.push({
+    name: name,
+    price: price
+  });
+
+  document.getElementById("count").innerHTML = cart.length;
+  updateCart();
+
+  alert(name + " Added To Cart!");
+}
+
+
+function updateCart(){
+
+  let items = document.getElementById("items");
+  let total = 0;
+
+  items.innerHTML = "";
+
+  cart.forEach((product, index)=>{
+
+    total += product.price;
+
+    items.innerHTML += `
+      <p>
+        ${index+1}. ${product.name}
+        - ₹${product.price}
+      </p>
+      <hr>
+    `;
+
+  });
+
+  document.getElementById("total").innerHTML = total;
+
+}
+
+
+function openCart(){
+  document.getElementById("cart").style.display = "block";
+}
+
+
+function closeCart(){
+  document.getElementById("cart").style.display = "none";
+}
+
+
+function orderWhatsApp(){
+
+  if(cart.length === 0){
+    alert("Your cart is empty!");
+    return;
+  }
+
+  let message = "Hello Nayan Cart,%0A%0AI want to order:%0A";
+
+  cart.forEach((item, i)=>{
+    message += (i+1) + ". " + item.name + " - ₹" + item.price + "%0A";
+  });
+
+  message += "%0ATotal: ₹" + document.getElementById("total").innerHTML;
+
+  window.open(
+    "https://wa.me/917061637177?text=" + message,
+    "_blank"
+  );
+
+}
+
+</script>
+
+</body>
+</html>
